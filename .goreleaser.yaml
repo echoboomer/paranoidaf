@@ -1,0 +1,19 @@
+project_name: paranoidaf
+release:
+  github:
+    owner: echoboomer
+    name: paranoidaf
+builds:
+  - id: paranoidaf
+    goos:
+      - linux
+      - darwin
+    goarch:
+      - amd64
+    env:
+      - CGO_ENABLED=0
+      - GO111MODULE=on
+    main: main.go
+    binary: paranoidaf
+    ldflags:
+      - -s -w -X github.com/echoboomer/paranoidaf/pkg/common.Version={{ .Tag }}
