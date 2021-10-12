@@ -2,7 +2,7 @@ name: gosec
 on:
   pull_request:
     branches:
-      - master
+      - main
 jobs:
   tests:
     runs-on: ubuntu-latest
