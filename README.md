@@ -25,6 +25,8 @@ From there, details about each `Deployment` are added to a struct that keeps tra
 
 We make the reasonable assumption that your resources will likely share this label, usually something like `app: foobar`. If you end up with no resources returned, check these labels.
 
+An example setup of resources is located within the `manifests/` directory for guidance.
+
 ## Usage
 
 The app is simple and only has one command: `eval`
