@@ -40,7 +40,7 @@ type UGPrepOptions struct {
 // Check carries out various processes related to the check
 func Check(config *rest.Config, clientset kubernetes.Interface, o *UGPrepOptions) {
 	// Friendly info
-	log.Infof("Checking cluster %s for readiness...", o.ClusterName)
+	log.Infof("Checking cluster %s...", o.ClusterName)
 
 	// If a Namespace is passed in, we only check that one
 	// Otherwise, we check all non-filtered Namespaces
@@ -69,9 +69,10 @@ func Check(config *rest.Config, clientset kubernetes.Interface, o *UGPrepOptions
 
 	// Establish qualifying Deployments as the basis for the check
 	deployments := returnEligibleDeployments(clientset, nsList)
-
 	if len(deployments) == 0 {
-		log.Infof("You don't have any Deployments, so you're pretty resilient.")
+		log.Infof("Didn't find any Deployments in these Namespaces: %s", nsList)
 	}
+
+	// Run it
 	checkDeployments(clientset, deployments)
 }

@@ -91,7 +91,11 @@ func checkDeployments(clientset kubernetes.Interface, deployments []appsv1.Deplo
 			log.Fatal(err)
 		}
 		fmt.Printf("----------------------------------------------------------------------\n")
-		_, err = emoji.Printf(":information_source: Current replicas: %v\n", dep.replicas)
+		_, err = emoji.Printf(":information_source:	Current replicas: %v\n", dep.replicas)
+		if err != nil {
+			log.Fatal(err)
+		}
+		_, err = emoji.Printf(":information_source:	Matching resources using labels: %v\n", dep.labels)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -99,34 +103,34 @@ func checkDeployments(clientset kubernetes.Interface, deployments []appsv1.Deplo
 		// Check for HorizontalPodAutoscaler
 		hpa := returnHorizontalPodAutoscalers(clientset, dep.name, dep.namespace, dep.labels)
 		if hpa.name == "" {
-			_, err = emoji.Printf(":warning: This app does not have a HorizontalPodAutoscaler. Its replica count is likely static.\n")
+			_, err = emoji.Printf(":warning:	Could not find a HorizontalPodAutoscaler using labels %s. Double check the labels. The Deployment replica count is likely static. Read more here: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/\n", dep.labels)
 			if err != nil {
 				log.Fatal(err)
 			}
 			if dep.replicas != 0 {
 				if dep.replicas < 2 {
-					_, err = emoji.Printf(":point_right: Suggestion - verify that the minimum replica count is not set for a single replica, enable a HorizontalPodAutoscaler, and set minReplicas to at least 2.\n")
+					_, err = emoji.Printf(":point_right:	Suggestion - verify that the minimum replica count is not set for a single replica, enable a HorizontalPodAutoscaler, and set minReplicas to at least 2.\n")
 					if err != nil {
 						log.Fatal(err)
 					}
-					_, err = emoji.Printf(":point_right: Suggestion - add and enable a PodDisruptionBudget with at least a maxUnavailable less than configured min replicas.\n")
+					_, err = emoji.Printf(":point_right:	Suggestion - add and enable a PodDisruptionBudget with at least a maxUnavailable less than configured min replicas.\n")
 					if err != nil {
 						log.Fatal(err)
 					}
 				} else {
-					_, err = emoji.Printf(":white_check_mark: Current replica count is at least 2. This is a good start, but could still result in a disruption.\n")
+					_, err = emoji.Printf(":white_check_mark:	Current replica count is at least 2. This helps keep this application up during events like rollouts and upgrades.\n")
 					if err != nil {
 						log.Fatal(err)
 					}
 				}
 			} else {
-				_, err = emoji.Printf(":warning: Couldn't figure out spec.replicas.")
+				_, err = emoji.Printf(":warning:	Couldn't figure out spec.replicas.")
 				if err != nil {
 					log.Fatal(err)
 				}
 			}
 		} else {
-			_, err = emoji.Printf(":white_check_mark: This app has a HorizontalPodAutoscaler with %v min replicas and %v max replicas.\n", hpa.min, hpa.max)
+			_, err = emoji.Printf(":white_check_mark:	This app has a HorizontalPodAutoscaler with %v min replicas and %v max replicas.\n", hpa.min, hpa.max)
 			if err != nil {
 				log.Fatal(err)
 			}
@@ -135,16 +139,16 @@ func checkDeployments(clientset kubernetes.Interface, deployments []appsv1.Deplo
 		// Check for PodDisruptionBudget
 		pdb := returnPodDisruptionBudgets(clientset, dep.name, dep.namespace, dep.labels)
 		if pdb.name == "" {
-			_, err = emoji.Printf(":warning: This app does not have a PodDisruptionBudget. This application will likely experience an interruption.\n")
+			_, err = emoji.Printf(":warning:	This app does not have a PodDisruptionBudget. This application could experience interruptions during rollouts, upgrades, etc. Read more here: https://kubernetes.io/docs/concepts/workloads/pods/disruptions/\n")
 			if err != nil {
 				log.Fatal(err)
 			}
-			_, err = emoji.Printf(":point_right: Suggestion - enable a PodDisruptionBudget.\n")
+			_, err = emoji.Printf(":point_right:	Suggestion - enable a PodDisruptionBudget.\n")
 			if err != nil {
 				log.Fatal(err)
 			}
 		} else {
-			_, err = emoji.Printf(":white_check_mark: This app has a PodDisruptionBudget configured with: %v\n", pdb.availabilityConfig)
+			_, err = emoji.Printf(":white_check_mark:	This app has a PodDisruptionBudget configured with: %v\n", pdb.availabilityConfig)
 			if err != nil {
 				log.Fatal(err)
 			}
@@ -209,10 +213,10 @@ func returnHorizontalPodAutoscalers(clientset kubernetes.Interface, application 
 // returnPodDisruptionBudgets returns a list of PodDisruptionBudgets for a given
 // application
 func returnPodDisruptionBudgets(clientset kubernetes.Interface, application string, ns string, labelsAsString string) *pdbDescription {
-	pdbs, err := clientset.PolicyV1beta1().PodDisruptionBudgets(ns).List(context.TODO(), metav1.ListOptions{
+	pdbs, err := clientset.PolicyV1().PodDisruptionBudgets(ns).List(context.TODO(), metav1.ListOptions{
 		TypeMeta: metav1.TypeMeta{
 			Kind:       "PodDisruptionBudget",
-			APIVersion: "policy/v1beta1",
+			APIVersion: "policy/v1",
 		},
 		LabelSelector: labelsAsString,
 	})
