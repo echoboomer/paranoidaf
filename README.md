@@ -98,11 +98,11 @@ Global Flags:
 
 To run the check, you can provide `eval` by itself to check all `Namespaces` except the ones filtered (shown above):
 
-![All Namespaces](https://github.com/echoboomer/paranoidaf/blob/master/assets/sample-screenshot-1.png)
+![All Namespaces](https://github.com/echoboomer/paranoidaf/blob/main/assets/sample-screenshot-1.png)
 
 You can also provide the `--namespace` flag to check a specific `Namespace`:
 
-![Specific Namespace](https://github.com/echoboomer/paranoidaf/blob/master/assets/sample-screenshot-2.png)
+![Specific Namespace](https://github.com/echoboomer/paranoidaf/blob/main/assets/sample-screenshot-2.png)
 
 ## Disclaimer
 
