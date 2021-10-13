@@ -15,7 +15,17 @@ This tool aims to help developers discover opportunities within Kubernetes clust
 
 ## Installation
 
-Download the latest version for your OS and put it within `$PATH`.
+If you have `go` installed:
+
+`go get github.com/echoboomer/paranoidaf`
+
+Provided `GOBIN` is in `$PATH`, you should now be able to type `paranoidaf` and run the app.
+
+Alternatively, just download the latest release from this repository and unpack it locally either to a directory in `$PATH` or somewhere you can run it directly:
+
+`tar -xvf paranoidaf_0.1.0_darwin_amd64.tar.gz -C /usr/bin`
+
+You should now be able to type `paranoidaf` and run the app.
 
 ## Logic
 
