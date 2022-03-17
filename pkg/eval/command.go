@@ -82,7 +82,7 @@ func buildDeploymentDescription(d appsv1.Deployment) *deploymentDescription {
 // checkDeployments procsses a list of Deployments and verifies their configurations as they
 // relate to high availability and resiliency
 func checkDeployments(clientset kubernetes.Interface, deployments []appsv1.Deployment) {
-	fmt.Printf("\n")
+	fmt.Println()
 	for _, d := range deployments {
 		// Build a struct for each Deployment
 		dep := buildDeploymentDescription(d)
@@ -153,7 +153,7 @@ func checkDeployments(clientset kubernetes.Interface, deployments []appsv1.Deplo
 				log.Fatal(err)
 			}
 		}
-		fmt.Printf("\n")
+		fmt.Println()
 	}
 }
 
@@ -176,9 +176,7 @@ func returnEligibleDeployments(clientset kubernetes.Interface, nsList []string) 
 		if err != nil {
 			log.Errorf("Error: %s", err)
 		}
-		for _, d := range deployments.Items {
-			deploymentList = append(deploymentList, d)
-		}
+		deploymentList = append(deploymentList, deployments.Items...)
 	}
 	return deploymentList
 }

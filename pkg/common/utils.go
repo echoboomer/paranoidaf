@@ -28,9 +28,6 @@ import (
 	"github.com/spf13/afero"
 )
 
-// Use afero for file system to allow for easier testing
-var fs afero.Fs = afero.NewOsFs()
-
 // DeleteFromSlice removes the supplied single element from a given slice
 func DeleteFromSlice(slice []string, selector string) []string {
 	var result []string
@@ -63,7 +60,7 @@ func FindInSlice(slice []string, element string) (int, bool) {
 	return -1, false
 }
 
-// PAFHeader returns a nice little header for the app
+// PAFHeader returns a header for the app
 func PAFHeader() {
 	myFigure := figure.NewFigure("paranoid af", "cosmic", true)
 	myFigure.Print()
