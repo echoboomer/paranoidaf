@@ -31,6 +31,9 @@ import (
 	"k8s.io/client-go/rest"
 )
 
+// Ignored Kubernetes Namespaces
+var nsFilter = []string{"kube-system", "kube-node-lease", "kube-public"}
+
 // UGPrepOptions acts as a container to hold information passed into the process
 type UGPrepOptions struct {
 	ClusterName string
@@ -61,7 +64,6 @@ func Check(config *rest.Config, clientset kubernetes.Interface, o *UGPrepOptions
 
 		// Filter out unwanted Namespaces
 		// kube-public, kube-system, kube-node-lease
-		nsFilter := []string{"kube-system", "kube-node-lease", "kube-public"}
 		for _, filteredNS := range nsFilter {
 			nsList = common.DeleteFromSlice(nsList, filteredNS)
 		}

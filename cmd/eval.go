@@ -46,7 +46,9 @@ var evalCmd = &cobra.Command{
 	
 This command looks specifically at the resiliency of your applications and
 assesses their behavior during disruptive events like cluster upgrades or
-Node scaling.`,
+Node scaling. This is done by evaluating replica counts, PodDisruptionBudgets,
+and HorizontalPodAutoscalers. Helpful suggestions will be given to help improve
+resiliency.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		// Initiate kubeconfig
 		config, clientset, _ := kubetools.CreateKubeConfig(false)
