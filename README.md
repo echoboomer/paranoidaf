@@ -5,7 +5,7 @@
 ![GitHub contributors](https://img.shields.io/github/contributors/echoboomer/paranoidaf)
 ![GitHub issues](https://img.shields.io/github/issues/echoboomer/paranoidaf)
 ![GitHub license](https://img.shields.io/github/license/echoboomer/paranoidaf)
-![GitHub build](https://img.shields.io/github/actions/workflow/status/echoboomer/paranoidaf/release.yml?branch=main)
+![GitHub build](https://img.shields.io/github/actions/workflow/status/echoboomer/paranoidaf/release.yaml?branch=main)
 
 `paranoidaf` is a tool for developers who are constantly paranoid about the configuration of their Kubernetes clusters.
 
